@@ -1,22 +1,23 @@
 import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
+
 import connectDB from "./src/config/db.config.js"
+import urlRoutes from "./src/routes/url.route.js";
+import { redirectShortUrl } from './src/controllers/url.controller.js';
 
 const app = express();
 
-// Middleware to parse JSON bodies
+// Middleware
 app.use(express.json());
-// Middleware to parse URL-encoded bodies
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-   res.send('Welcome to the URL Shortener API');
-});
+// Routes
+app.use("/api/create", urlRoutes);
+app.get("/:id", redirectShortUrl)
 
-
-const port = process.env.PORT || 3000;
 // Start the server
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
    connectDB();
    console.log(`Server is running on port ${port}`);
