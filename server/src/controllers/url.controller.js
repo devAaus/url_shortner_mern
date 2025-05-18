@@ -1,18 +1,16 @@
 import { getUrlByShortUrl, saveUrl } from "../dao/url.dao.js";
+import { BadRequestError } from "../utils/errorHandler.js";
 
 
-export const createShortUrl = async (req, res) => {
+export const createShortUrl = async (req, res, next) => {
    const { url } = req.body;
 
    if (!url) {
-      return res.status(400).json({
-         message: "URL is required"
-      });
+      throw new BadRequestError("URL is required");
    }
 
    try {
       const data = await saveUrl(url);
-
       const shortUrl = `${process.env.APP_URL}/${data.shortUrl}`;
 
       res.status(201).json({
@@ -20,18 +18,18 @@ export const createShortUrl = async (req, res) => {
       });
 
    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Error creating short URL" });
+      next(error);
    }
 };
 
-export const redirectShortUrl = async (req, res) => {
-   const { id } = req.params;
-   const url = await getUrlByShortUrl(id);
-   if (!url) {
-      return res.status(404).json({
-         message: "URL not found"
-      });
+
+export const redirectShortUrl = async (req, res, next) => {
+   try {
+      const { id } = req.params;
+      const url = await getUrlByShortUrl(id);
+
+      res.redirect(url.originalUrl);
+   } catch (error) {
+      next(error);
    }
-   res.redirect(url.originalUrl);
 }

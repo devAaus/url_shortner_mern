@@ -1,5 +1,6 @@
 import { nanoid } from "nanoid";
 import Url from "../models/url.model.js";
+import { BadRequestError, NotFoundError } from "../utils/errorHandler.js";
 
 export const saveUrl = async (originalUrl, userId) => {
    const shortUrl = nanoid(7);
@@ -14,8 +15,7 @@ export const saveUrl = async (originalUrl, userId) => {
       await data.save();
       return data;
    } catch (error) {
-      console.error("Error saving URL:", error);
-      throw new Error("Failed to save URL");
+      throw new BadRequestError(error.message || "Failed to save URL");
    }
 }
 
@@ -23,6 +23,12 @@ export const getUrlByShortUrl = async (shortUrl) => {
    const url = await Url.findOneAndUpdate(
       { shortUrl },
       { $inc: { clicks: 1 } },
+      { new: true }
    );
+
+   if (!url) {
+      throw new NotFoundError("Short URL not found");
+   }
+
    return url;
 }
