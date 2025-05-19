@@ -1,40 +1,41 @@
 import { useState } from "react"
+import { useMutation } from "@tanstack/react-query"
 import { Link, Check, Copy } from "lucide-react"
-import axios from "axios";
 
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Label } from "./ui/label"
+import { createShortUrl } from "@/api/url.api"
+
 
 function UrlForm() {
-   const [url, setUrl] = useState()
-   const [shortUrl, setShortUrl] = useState()
-   const [loading, setLoading] = useState(false)
-   const [copied, setCopied] = useState(false)
+   const [url, setUrl] = useState("");
+   const [copied, setCopied] = useState(false);
 
+   const {
+      mutate: shortenUrl,
+      data: shortUrl,
+      isPending: loading,
+   } = useMutation({
+      mutationFn: createShortUrl,
+      onSuccess: () => {
+         setUrl("");
+      },
+   });
 
-   const handleSubmit = async (e) => {
+   const handleSubmit = (e) => {
       e.preventDefault();
-      setLoading(true)
-
-      if (!url) return
-
-      const { data } = await axios.post(`http://localhost:3000/api/create`, { url });
-
-      setShortUrl(data.shortUrl);
-      setUrl("");
-   }
+      if (!url) return;
+      shortenUrl(url);
+   };
 
    const copyToClipboard = () => {
-      if (!shortUrl) return
+      if (!shortUrl) return;
 
-      navigator.clipboard.writeText(shortUrl)
-      setCopied(true)
-
-      setTimeout(() => {
-         setCopied(false)
-      }, 2000)
-   }
+      navigator.clipboard.writeText(shortUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+   };
 
    return (
       <>
@@ -67,26 +68,20 @@ function UrlForm() {
                   Your shortened URL:
                </p>
                <div className="flex items-center gap-2">
-                  <Input
-                     value={shortUrl}
-                     readOnly
-                     className="bg-gray-50"
-                  />
+                  <Input value={shortUrl} readOnly className="bg-gray-50" />
                   <Button
                      size="icon"
                      variant="outline"
-                     onClick={copyToClipboard} className="flex-shrink-0"
+                     onClick={copyToClipboard}
+                     className="flex-shrink-0"
                   >
-                     {copied
-                        ? <Check className="h-4 w-4" />
-                        : <Copy className="h-4 w-4" />
-                     }
+                     {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                   </Button>
                </div>
             </div>
          )}
       </>
-   )
+   );
 }
 
-export default UrlForm
+export default UrlForm;
