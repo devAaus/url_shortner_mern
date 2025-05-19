@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -8,6 +9,11 @@ import { redirectShortUrl } from './src/controllers/url.controller.js';
 import { errorHandler } from './src/utils/errorHandler.js';
 
 const app = express();
+
+app.use(cors({
+   origin: 'http://localhost:5173',
+   credentials: true
+}));
 
 // Middleware
 app.use(express.json());
