@@ -1,6 +1,12 @@
+import HomePage from "./pages/HomePage"
+
+
 function App() {
+
   return (
-    <div className="text-4xl">App</div>
+    <>
+      <HomePage />
+    </>
   )
 }
 
