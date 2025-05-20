@@ -1,12 +1,12 @@
 import { Outlet } from "@tanstack/react-router"
 import { AppHeader } from "./components/AppHeader"
-import { Toaster } from './components/ui/sonner'
+import { Toaster } from 'sonner'
 
 function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Toaster />
+      <Toaster position="top-right" expand={true} richColors closeButton />
       <AppHeader />
       <Outlet />
     </div>

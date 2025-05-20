@@ -90,10 +90,29 @@ export const login = async (req, res, next) => {
 
 export const logout = async (req, res, next) => {
    try {
-      res.clearCookie("token");
+      res.clearCookie("accessToken");
       res.status(200).json({
          success: true,
          message: "Logout successful",
+      });
+   } catch (error) {
+      next(error);
+   }
+}
+
+export const getCurrentUser = async (req, res, next) => {
+   try {
+      const user = req.user;
+
+      res.status(200).json({
+         user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar,
+         },
+         success: true,
+         message: "User fetched successfully",
       });
    } catch (error) {
       next(error);
