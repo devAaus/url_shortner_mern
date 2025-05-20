@@ -7,6 +7,7 @@ dotenv.config();
 import connectDB from "./src/config/db.config.js"
 import urlRoutes from "./src/routes/url.route.js";
 import authRoutes from "./src/routes/auth.route.js";
+import userRoutes from "./src/routes/user.route.js";
 import { redirectShortUrl } from './src/controllers/url.controller.js';
 import { errorHandler } from './src/utils/errorHandler.js';
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
 
 // Routes
+app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/create", urlRoutes);
 app.get("/:id", redirectShortUrl)
