@@ -1,6 +1,6 @@
 import { cookieOptions } from "../config/config.js";
 import { findUserByEmail, saveUser } from "../dao/user.dao.js";
-import { BadRequestError, ConflictError } from "../utils/errorHandler.js";
+import { BadRequestError, ConflictError, UnauthorizedError } from "../utils/errorHandler.js";
 import { signToken } from "../utils/helper.js";
 import bcrypt from "bcrypt";
 
