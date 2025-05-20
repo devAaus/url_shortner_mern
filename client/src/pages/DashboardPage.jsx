@@ -1,5 +1,7 @@
+import { UrlTable } from "@/components/UrlTable"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import UrlForm from "@/components/UrlForm"
+import { UrlStats } from "@/components/UrlStats"
 
 export const DashboardPage = () => {
    return (
@@ -13,6 +15,8 @@ export const DashboardPage = () => {
                   <UrlForm />
                </CardContent>
             </Card>
+            <UrlStats />
+            <UrlTable />
          </div>
       </main>
    )
