@@ -62,7 +62,7 @@ function UrlForm() {
                   Your shortened URL:
                </p>
                <div className="flex items-center gap-2">
-                  <Input value={shortUrl} readOnly className="bg-gray-50" />
+                  <Input value={shortUrl} readOnly className="bg-background" />
                   <Button
                      size="icon"
                      variant="outline"
