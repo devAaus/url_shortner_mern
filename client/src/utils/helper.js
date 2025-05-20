@@ -7,10 +7,11 @@ export const checkAuth = async ({ context }) => {
    try {
       const { queryClient, store } = context;
 
-      const user = await queryClient.ensureQueryData({
+      const { user } = await queryClient.ensureQueryData({
          queryKey: ["currentUser"],
          queryFn: getCurrentUser
       });
+
       if (!user) return false;
       store.dispatch(login(user))
 

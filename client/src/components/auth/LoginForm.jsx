@@ -8,7 +8,7 @@ import { login } from "@/api/user.api"
 import { toast } from "sonner"
 import { useSelector, useDispatch } from "react-redux"
 import { login as loginAction } from "@/store/slice/authSlice"
-import { useNavigate } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 
 export function LoginForm() {
    const [email, setEmail] = useState("")
@@ -117,9 +117,9 @@ export function LoginForm() {
          <CardFooter className="flex justify-center border-t p-4">
             <div className="text-sm text-gray-600">
                Don't have an account?{" "}
-               <a href="/register" className="font-medium text-primary hover:underline">
+               <Link to="/register" className="font-medium text-primary hover:underline">
                   Sign up
-               </a>
+               </Link>
             </div>
          </CardFooter>
       </Card>

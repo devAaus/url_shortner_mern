@@ -4,7 +4,6 @@ import { Link, Check, Copy } from "lucide-react"
 
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
-import { Label } from "./ui/label"
 import { createShortUrl } from "@/api/url.api"
 
 
@@ -39,25 +38,20 @@ function UrlForm() {
 
    return (
       <>
-         <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-               <Label htmlFor="url" className="text-gray-700">
-                  Enter your URL
-               </Label>
-               <div className="relative">
-                  <Link className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                  <Input
-                     type="url"
-                     id="url"
-                     value={url}
-                     onChange={(e) => setUrl(e.target.value)}
-                     placeholder="https://example.com"
-                     className="pl-10"
-                     required
-                  />
-               </div>
+         <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:flex-row">
+            <div className="relative flex-1">
+               <Link className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+               <Input
+                  type="url"
+                  id="url"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  placeholder="Paste your long URL here"
+                  className="pl-10"
+                  required
+               />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" disabled={loading}>
                {loading ? "Shortening..." : "Shorten URL"}
             </Button>
          </form>

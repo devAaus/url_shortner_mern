@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { AtSign, Lock, User, Eye, EyeOff } from "lucide-react"
 import { register } from "@/api/user.api"
 import { toast } from "sonner"
-import { useNavigate } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 import { useSelector, useDispatch } from "react-redux"
 import { login as loginAction } from "@/store/slice/authSlice"
 
@@ -134,9 +134,9 @@ export function RegisterForm() {
          <CardFooter className="flex justify-center border-t p-4">
             <div className="text-sm text-gray-600">
                Already have an account?{" "}
-               <a href="/login" className="font-medium text-primary hover:underline">
+               <Link to="/login" className="font-medium text-primary hover:underline">
                   Sign in
-               </a>
+               </Link>
             </div>
          </CardFooter>
       </Card>
