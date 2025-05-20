@@ -6,6 +6,9 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { AtSign, Lock, User, Eye, EyeOff } from "lucide-react"
 import { register } from "@/api/user.api"
 import { toast } from "sonner"
+import { useNavigate } from "@tanstack/react-router"
+import { useSelector, useDispatch } from "react-redux"
+import { login as loginAction } from "@/store/slice/authSlice"
 
 export function RegisterForm() {
    const [name, setName] = useState("")
@@ -14,6 +17,12 @@ export function RegisterForm() {
    const [loading, setLoading] = useState(false)
    const [error, setError] = useState('')
    const [showPassword, setShowPassword] = useState(false)
+   const navigate = useNavigate()
+
+   const auth = useSelector((state) => state.auth)
+   console.log("Auth state:", auth);
+
+   const dispatch = useDispatch()
 
    const handleSubmit = async (e) => {
       e.preventDefault()
@@ -33,12 +42,11 @@ export function RegisterForm() {
       }
 
       try {
-         const data = await register(name, email, password);
-         if (data.success === true) {
-            toast.success(data.message);
-            setName("")
-            setEmail("")
-            setPassword("")
+         const res = await register(name, email, password);
+         dispatch(loginAction(res.user))
+         if (res.success === true) {
+            toast.success(res.message);
+            navigate({ to: "/dashboard" })
          }
 
       } catch (error) {
