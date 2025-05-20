@@ -1,16 +1,13 @@
-import HomePage from "./pages/HomePage"
-import LoginPage from "./pages/LoginPage"
-import RegisterPage from "./pages/RegisterPAge"
-
+import { Outlet } from "@tanstack/react-router"
+import { AppHeader } from "./components/AppHeader"
 
 function App() {
 
   return (
-    <>
-      <HomePage />
-      {/* <LoginPage /> */}
-      <RegisterPage />
-    </>
+    <div className="min-h-screen flex flex-col">
+      <AppHeader />
+      <Outlet />
+    </div>
   )
 }
 
