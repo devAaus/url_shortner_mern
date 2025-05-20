@@ -14,6 +14,8 @@ export const createShortUrl = async (req, res, next) => {
       const shortUrl = `${process.env.APP_URL}/${data.shortUrl}`;
 
       res.status(201).json({
+         success: true,
+         message: "Short URL created successfully",
          shortUrl
       });
 
