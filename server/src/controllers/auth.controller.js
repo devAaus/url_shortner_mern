@@ -21,9 +21,20 @@ export const register = async (req, res, next) => {
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      await saveUser(name, email, hashedPassword);
+      const user = await saveUser(name, email, hashedPassword);
+
+      const token = signToken({ userId: user._id });
+
+      // ✅ Set as HTTP-only cookie
+      res.cookie("accessToken", token, cookieOptions);
 
       res.status(201).json({
+         user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar,
+         },
          success: true,
          message: "User registered successfully"
       });
@@ -62,6 +73,12 @@ export const login = async (req, res, next) => {
       res.cookie("accessToken", token, cookieOptions);
 
       res.status(200).json({
+         user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar,
+         },
          success: true,
          message: "Login successful",
       });
