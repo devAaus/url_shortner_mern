@@ -10,7 +10,9 @@ export const createShortUrl = async (req, res, next) => {
    }
 
    try {
-      const data = await saveUrl(url);
+      const userId = req.user._id;
+
+      const data = await saveUrl(url, userId);
       const shortUrl = `${process.env.APP_URL}/${data.shortUrl}`;
 
       res.status(201).json({
