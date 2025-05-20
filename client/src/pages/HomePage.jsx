@@ -2,8 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import UrlForm from "@/components/UrlForm"
 
-export default function URLShortener() {
-
+export default function HomePage() {
    return (
       <div className="flex min-h-screen items-center justify-center p-4">
          <Card className="w-full max-w-md">
