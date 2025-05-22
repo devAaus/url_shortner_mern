@@ -5,6 +5,7 @@ import { Link, Check, Copy } from "lucide-react"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { createShortUrl } from "@/api/url.api"
+import { toast } from "sonner"
 
 
 function UrlForm() {
@@ -20,6 +21,13 @@ function UrlForm() {
       onSuccess: () => {
          setUrl("");
       },
+      onError: (error) => {
+         if (error?.response?.status === 401) {
+            toast.error("Please log in to shorten URLs");
+         } else {
+            toast.error("Something went wrong. Please try again.");
+         }
+      }
    });
 
    const handleSubmit = (e) => {
@@ -27,6 +35,9 @@ function UrlForm() {
       if (!url) return;
       shortenUrl(url);
    };
+
+
+
 
    const copyToClipboard = () => {
       if (!shortUrl) return;
@@ -38,22 +49,24 @@ function UrlForm() {
 
    return (
       <>
-         <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:flex-row">
-            <div className="relative flex-1">
-               <Link className="absolute left-3 top-2 h-5 w-5 text-gray-400" />
-               <Input
-                  type="url"
-                  id="url"
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  placeholder="Paste your long URL here"
-                  className="pl-10"
-                  required
-               />
+         <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="flex flex-col gap-4 sm:flex-row">
+               <div className="relative flex-1">
+                  <Link className="absolute left-3 top-2 h-5 w-5 text-gray-400" />
+                  <Input
+                     type="url"
+                     id="url"
+                     value={url}
+                     onChange={(e) => setUrl(e.target.value)}
+                     placeholder="Paste your long URL here"
+                     className="pl-10"
+                     required
+                  />
+               </div>
+               <Button type="submit" disabled={loading}>
+                  {loading ? "Shortening..." : "Shorten URL"}
+               </Button>
             </div>
-            <Button type="submit" disabled={loading}>
-               {loading ? "Shortening..." : "Shorten URL"}
-            </Button>
          </form>
 
          {shortUrl && (
