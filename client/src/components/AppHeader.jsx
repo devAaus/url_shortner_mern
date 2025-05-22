@@ -1,13 +1,31 @@
 import React from 'react'
-import { buttonVariants } from './ui/button'
-import { Link } from '@tanstack/react-router'
+import { Button, buttonVariants } from './ui/button'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { LinkIcon } from 'lucide-react'
 import { useSelector } from 'react-redux'
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
+import { Avatar, AvatarFallback } from './ui/avatar'
 import { LogOut } from 'lucide-react'
+import { logout } from '@/api/user.api'
+import { toast } from 'sonner'
+import { logout as logoutAction } from '@/store/slice/authSlice'
+import { useDispatch } from 'react-redux'
+
 
 export const AppHeader = () => {
   const auth = useSelector((state) => state.auth)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const logoutHandle = async () => {
+    const res = await logout()
+
+    if (res.success) {
+      dispatch(logoutAction())
+      navigate({ to: '/login' })
+      toast.success('Logout successfully')
+    }
+
+  }
   return (
     <header className="border-b">
       <div className="flex h-16 items-center justify-between px-4">
@@ -21,16 +39,15 @@ export const AppHeader = () => {
           <div className="flex items-center gap-4">
             <Link to="/dashboard">
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
+                {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </Link>
-            <Link
-              to="/register"
-              className={`${buttonVariants({ variant: 'default' })}`}
+            <Button
+              onClick={logoutHandle}
             >
               <LogOut className="h-4 w-4" />
-            </Link>
+            </Button>
           </div>
         ) : (
           <div className="flex gap-4">

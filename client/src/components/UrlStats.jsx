@@ -4,26 +4,35 @@ import { Card, CardContent, } from "@/components/ui/card"
 import { useQuery } from "@tanstack/react-query"
 
 export const UrlStats = () => {
-   const { data } = useQuery({
+   const { data, isError } = useQuery({
       queryKey: ["stats"],
       queryFn: getUserUrlsStats,
       // refetchInterval: 30000,
       staleTime: 0,
    })
 
+   if (isError) {
+      return (
+         <div className="mb-6">
+            <p className="text-red-500">Error fetching stats</p>
+         </div>
+      )
+   }
+
+
    return (
       <div className="mb-6 grid gap-4 md:grid-cols-4">
          <Card>
             <CardContent className="p-6">
                <div className="text-sm font-medium text-gray-500">Total Links</div>
-               <div className="mt-2 text-3xl font-bold">{data.totalUrls}</div>
+               <div className="mt-2 text-3xl font-bold">{data?.totalUrls}</div>
             </CardContent>
          </Card>
          <Card>
             <CardContent className="p-6">
                <div className="text-sm font-medium text-gray-500">Total Clicks</div>
                <div className="mt-2 text-3xl font-bold">
-                  {data.totalClicks}
+                  {data?.totalClicks}
                </div>
             </CardContent>
          </Card>

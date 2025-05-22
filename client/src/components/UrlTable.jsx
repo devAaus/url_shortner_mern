@@ -2,7 +2,6 @@ import { getAllUserUrls } from "@/api/user.api"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useQuery } from "@tanstack/react-query"
-import { Zap } from "lucide-react"
 import { Link2Off } from "lucide-react"
 import { Check, Copy, ExternalLink } from "lucide-react"
 import { useState } from "react"
@@ -21,7 +20,8 @@ export const UrlTable = () => {
 
 
    const copyToClipboard = (id, url) => {
-      navigator.clipboard.writeText(url)
+      const shortUrl = import.meta.env.VITE_API_URL + "/" + url
+      navigator.clipboard.writeText(shortUrl)
       setCopiedId(id)
 
       setTimeout(() => {
