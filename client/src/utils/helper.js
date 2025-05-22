@@ -1,12 +1,11 @@
 
 import { getCurrentUser } from "@/api/user.api";
-import { login } from "@/store/slice/authSlice";
+import { login, logout } from "@/store/slice/authSlice";
 import { redirect } from "@tanstack/react-router"
 
 export const checkAuth = async ({ context }) => {
+   const { queryClient, store } = context;
    try {
-      const { queryClient, store } = context;
-
       const { user } = await queryClient.ensureQueryData({
          queryKey: ["currentUser"],
          queryFn: getCurrentUser
@@ -19,6 +18,7 @@ export const checkAuth = async ({ context }) => {
       if (!isAuthenticated) return false;
       return true
    } catch (error) {
+      store.dispatch(logout());
       console.error("Error in checkAuth:", error);
       return redirect({ to: "/login" })
    }
