@@ -9,6 +9,7 @@ import { toast } from "sonner"
 import { useSelector, useDispatch } from "react-redux"
 import { login as loginAction } from "@/store/slice/authSlice"
 import { Link, useNavigate } from "@tanstack/react-router"
+import { useEffect } from "react"
 
 export function LoginForm() {
    const [email, setEmail] = useState("")
@@ -17,11 +18,17 @@ export function LoginForm() {
    const [error, setError] = useState(null)
    const [showPassword, setShowPassword] = useState(false)
    const navigate = useNavigate()
+   const dispatch = useDispatch()
 
    const auth = useSelector((state) => state.auth)
-   console.log("Auth state:", auth);
+   const isAuthenticated = auth?.isAuthenticated || false;
+   useEffect(() => {
+      if (isAuthenticated) {
+         navigate({ to: "/dashboard" });
+      }
+   }, [isAuthenticated, navigate]);
 
-   const dispatch = useDispatch()
+
 
    const handleSubmit = async (e) => {
       e.preventDefault()
@@ -36,9 +43,9 @@ export function LoginForm() {
 
       try {
          const res = await login(email, password)
-         dispatch(loginAction(res.user))
 
          if (res.success) {
+            dispatch(loginAction(res.user))
             toast.success(res.message)
             navigate({ to: "/dashboard" })
          }
